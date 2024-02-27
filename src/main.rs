@@ -1,9 +1,22 @@
 use warp::Filter;
+use warp::Rejection;
+use warp::Reply;
 
 #[tokio::main]
 async fn main() {
-    // GET /hello/warp => 200 OK with body "Hello, warp!"
-    let hello = warp::path!("hello" / String).map(|name| format!("Hello, {}!", name));
-
+    let hello = hello().and(name()).and_then(greet_handler);
     warp::serve(hello).run(([127, 0, 0, 1], 3030)).await;
+}
+
+fn hello() -> warp::filters::BoxedFilter<()> {
+    warp::path("hello").boxed()
+}
+
+fn name() -> warp::filters::BoxedFilter<(String,)> {
+    warp::path::param().boxed()
+}
+
+async fn greet_handler(name: String) -> Result<impl Reply, Rejection> {
+    let reply = format!("hello {}", name);
+    Ok(warp::reply::html(reply))
 }
