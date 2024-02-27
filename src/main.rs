@@ -1,6 +1,7 @@
 use warp::Filter;
 
 mod handlers;
+mod models;
 
 #[tokio::main]
 async fn main() {
