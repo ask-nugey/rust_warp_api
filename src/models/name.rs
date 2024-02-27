@@ -19,6 +19,7 @@ impl Name {
     }
 }
 
+// warp::path::params()関数で要求される
 impl FromStr for Name {
     type Err = NameError;
 
@@ -27,6 +28,7 @@ impl FromStr for Name {
     }
 }
 
+/// handlerのformat!マクロで要求される
 impl std::fmt::Display for Name {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.0)
